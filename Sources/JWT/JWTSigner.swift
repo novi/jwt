@@ -1,4 +1,4 @@
-import Crypto
+import CryptoKit
 
 /// A JWT signer.
 public final class JWTSigner {
@@ -82,9 +82,9 @@ extension JWTSigner {
     /// Creates an HMAC-based `CustomJWTAlgorithm` and `JWTSigner`.
     private static func hmac(_ hmac: HMAC, name: String, key: LosslessDataConvertible) -> JWTSigner {
         let alg = CustomJWTAlgorithm(name: name, sign: { plaintext in
-            return try hmac.authenticate(plaintext, key: key)
+            return Data( try hmac.authenticate(.data(plaintext.convertToData()), key: .data(key.convertToData())).bytes() )
         }, verify: { signature, plaintext in
-            return try hmac.authenticate(plaintext, key: key) == signature.convertToData()
+            return Data( try hmac.authenticate(.data(plaintext.convertToData()), key: .data(key.convertToData()) ).bytes() ) == signature.convertToData()
         })
         return .init(algorithm: alg)
     }
@@ -111,9 +111,9 @@ extension JWTSigner {
     /// Creates an RSA-based `CustomJWTAlgorithm` and `JWTSigner`.
     private static func rsa(_ rsa: RSA, name: String, key: RSAKey) -> JWTSigner {
         let alg = CustomJWTAlgorithm(name: name, sign: { plaintext in
-            return try rsa.sign(plaintext, key: key)
+            return Data( try rsa.sign(.data(plaintext.convertToData()), key: key).bytes() )
         }, verify: { signature, plaintext in
-            return try rsa.verify(signature, signs: plaintext, key: key)
+            return try rsa.verify(.data(signature.convertToData()), signs: .data(plaintext.convertToData()), key: key)
         })
         return .init(algorithm: alg)
     }

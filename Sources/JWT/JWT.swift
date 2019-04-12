@@ -1,4 +1,4 @@
-import Crypto
+import CryptoKit
 
 /// A JSON Web Token with a generic, codable payload.
 ///

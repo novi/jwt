@@ -1,7 +1,7 @@
 import XCTest
 @testable import JWT
 import Bits
-import Crypto
+import CryptoKit
 
 class JWTTests: XCTestCase {
     func testParse() throws {
@@ -57,8 +57,8 @@ class JWTTests: XCTestCase {
     }
 
     func testRSA() throws {
-        let privateSigner = try JWTSigner.rs256(key: .private(pem: privateKeyString))
-        let publicSigner = try JWTSigner.rs256(key: .public(pem: publicKeyString))
+        let privateSigner = try JWTSigner.rs256(key: .private(pem: .string(privateKeyString) ))
+        let publicSigner = try JWTSigner.rs256(key: .public(pem: .string(publicKeyString) ))
 
         let payload = TestPayload(
             sub: "vapor",

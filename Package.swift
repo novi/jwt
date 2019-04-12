@@ -11,10 +11,10 @@ let package = Package(
         .package(url: "https://github.com/vapor/core.git", from: "3.0.0"),
 
         // 🔑 Hashing (BCrypt, SHA, HMAC, etc), encryption, and randomness.
-        .package(url: "https://github.com/vapor/crypto.git", from: "3.0.0"),
+        .package(url: "https://github.com/novi/crypto.git", .revision("f9c6d7602ffd6f0336d83bb0c892b2b2e62ba754") ),
     ],
     targets: [
-        .target(name: "JWT", dependencies: ["Core", "Crypto"]),
+        .target(name: "JWT", dependencies: ["Core", "CryptoKit"]),
         .testTarget(name: "JWTTests", dependencies: ["JWT"]),
     ]
 )
